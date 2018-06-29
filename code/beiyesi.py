@@ -68,17 +68,17 @@ data_feat = pd.read_csv('protein_getp.csv')
 print(data_feat.head())
 
 
-feat = pd.read_csv('../../output/protein_get_II.csv') # 不稳定系数
+feat = pd.read_csv('../output/protein_get_II.csv') # 不稳定系数
 print(feat.head())
 data_feat = data_feat.merge(feat, on='Protein_ID', how='left')
 del feat
 
-feat = pd.read_csv('../../output/protein_get_Ai.csv') # 脂肪系数
+feat = pd.read_csv('../output/protein_get_Ai.csv') # 脂肪系数
 print(feat.head())
 data_feat = data_feat.merge(feat, on='Protein_ID', how='left')
 del feat
 
-feat = pd.read_csv('../../output/protein_get_gravy.csv') # GRAVY系数
+feat = pd.read_csv('../output/protein_get_gravy.csv') # GRAVY系数
 print(feat.head())
 data_feat = data_feat.merge(feat, on='Protein_ID', how='left')
 del feat
@@ -109,15 +109,7 @@ del data
 
 def kfold_lightgbm(max_depth, num_leaves,reg_alpha, reg_lambda, feature_fraction):
     # Divide in training/validation and test data
-#     idx = df['prediction_pay_price'].isnull()
-#     train_df = df
-#     test_df = df[idx]
-    # level_feats = [feat for feat in df.columns if feat.endswith('_level') ]
-#     del idx
-    # train_df = df_train
-    # test_df = df_test
-    # print("Starting LightGBM. Train shape: {}, test shape: {}".format(train_df.shape, test_df.shape))
-#     del df
+
     gc.collect()
     # Cross validation model
     stratified = False
@@ -165,29 +157,16 @@ def kfold_lightgbm(max_depth, num_leaves,reg_alpha, reg_lambda, feature_fraction
         fold_importance_df["importance"] = clf.feature_importances_
         fold_importance_df["fold"] = n_fold + 1
         feature_importance_df = pd.concat([feature_importance_df, fold_importance_df], axis=0)
-        # print('Fold %2d MSE : %.6f' % (n_fold + 1, mean_squared_error(valid_y, oof_preds[valid_idx])))
         del clf, train_x, train_y, valid_x, valid_y
         gc.collect()
     result = mean_squared_error(train_df['Ki'], oof_preds)
-    # print('Full mse score %.6f' % result)
-    # Write submission file and plot feature importance
+
+    # Write submission file 
     if not debug:
         nowTime = datetime.datetime.now().strftime('%m%d%H%M')  # 现在
         submission_file_name = "../output/tap_test_regress_pre"+ nowTime +".csv"
         test_df['Ki'] = sub_preds
         test_df[['Protein_ID', 'Ki']].to_csv(submission_file_name, index= False)
-    # display_importances(feature_importance_df)
-    # return - result * 10
-
-# Display/plot feature importance
-def display_importances(feature_importance_df_):
-    cols = feature_importance_df_[["feature", "importance"]].groupby("feature").mean().sort_values(by="importance", ascending=False)[:40].index
-    best_features = feature_importance_df_.loc[feature_importance_df_.feature.isin(cols)]
-    plt.figure(figsize=(8, 10))
-    sns.barplot(x="importance", y="feature", data=best_features.sort_values(by="importance", ascending=False))
-    plt.title('LightGBM Features (avg over folds)')
-    plt.tight_layout()
-    plt.savefig('lgbm_importances_regression.png')
 
 # with timer("Run LightGBM with kfold"):
 #     b_lgb = BayesianOptimization(kfold_lightgbm, space, random_state=2000)
