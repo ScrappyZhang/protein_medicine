@@ -2,7 +2,7 @@
 
 比赛链接：http://www.dcjingsai.com/common/cmpt/%E5%9F%BA%E4%BA%8E%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%9A%84%E8%8D%AF%E7%89%A9%E5%88%86%E5%AD%90%E7%AD%9B%E9%80%89_%E7%AB%9E%E8%B5%9B%E4%BF%A1%E6%81%AF.html
 
-相关数据可从链接处报名下载。
+相关数据可从链接处报名下载
 
 ## 参考文献：
 
@@ -46,25 +46,7 @@ lightgbm 2.1.1
 
 ## 文件夹说明
 
-.
-├── code  源代码文件夹
-│   ├── molecule_feature.py      药物特征提取
-│   ├── protein_getC.py          蛋白质理化性质特征提取
-│   ├── protein_getp.py          蛋白质二维图形化表示特征提取
-│   └── yaowu_data_for_train.py  模型训练与提交结果生成
-├── input  竞赛输入文件夹
-│   ├── df_affinity_test_toBePredicted.csv
-│   ├── df_affinity_train.csv
-│   ├── df_molecule.csv
-│   ├── df_protein_test.csv
-│   └── df_protein_train.csv
-├── output 源代码中间生成的特征数据文件夹
-│   ├── molecule_feature.csv  药物特征
-│   ├── protein_getC.csv      蛋白质三种理化性质数据
-│   └── protein_getp.csv      蛋白质三种二维图形化表示特征数据
-├── readme.txt       代码运行和文件夹说明
-└── submit           提交结果文件所在目录
-  └── lgb_******.csv
+![文件夹描述](./file_des.jpg)
 
 ## 代码运行说明：
 
